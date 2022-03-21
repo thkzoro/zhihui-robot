@@ -33,6 +33,7 @@ public:
         BIT_18
     } ColorMode_t;
 
+    void spi_init();
 
     void Init(Orientation_t _orientation);
 
@@ -58,7 +59,7 @@ private:
 
     void WriteData(uint8_t* _data, uint32_t _len, bool _useDma = false);
 
-    SPI* spi;
+    spi_device_handle_t spi_handle;
     Orientation_t orientation = DEGREE_0;
     ColorMode_t colorMode = BIT_18;
 

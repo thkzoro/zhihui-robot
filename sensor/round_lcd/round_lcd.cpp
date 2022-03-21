@@ -1,68 +1,28 @@
 #include "round_lcd.h"
 #include "freertos/FreeRTOS.h"
 #include "driver/spi_master.h"
+#include "esp_log.h"
+#include "driver/gpio.h"
 
 
 
 #define delay(x)	vTaskDelay(x / portTICK_PERIOD_MS);
 
-/*
-SPI sender
-
-This example is supposed to work together with the SPI receiver. It uses the standard SPI pins (MISO, MOSI, SCLK, CS) to
-transmit data over in a full-duplex fashion, that is, while the master puts data on the MOSI pin, the slave puts its own
-data on the MISO pin.
-
-This example uses one extra pin: GPIO_HANDSHAKE is used as a handshake pin. The slave makes this pin high as soon as it is
-ready to receive/send data. This code connects this line to a GPIO interrupt which gives the rdySem semaphore. The main
-task waits for this semaphore to be given before queueing a transmission.
-*/
-
-
-/*
-Pins in use. The SPI Master can use the GPIO mux, so feel free to change these if needed.
-*/
-#if CONFIG_IDF_TARGET_ESP32 || CONFIG_IDF_TARGET_ESP32S2
-#define GPIO_HANDSHAKE 2
-#define GPIO_MOSI 12
-#define GPIO_MISO 13
-#define GPIO_SCLK 15
-#define GPIO_CS 14
-
-#elif CONFIG_IDF_TARGET_ESP32C3
-#define GPIO_HANDSHAKE 3
-#define GPIO_MOSI 7
-#define GPIO_MISO 2
-#define GPIO_SCLK 6
-#define GPIO_CS 10
-
-#elif CONFIG_IDF_TARGET_ESP32S3
 #define GPIO_HANDSHAKE 2
 #define GPIO_MOSI 11
 #define GPIO_MISO 13
 #define GPIO_SCLK 12
 #define GPIO_CS 10
 
-#endif //CONFIG_IDF_TARGET_ESP32 || CONFIG_IDF_TARGET_ESP32S2
 
-
-#ifdef CONFIG_IDF_TARGET_ESP32
-#define SENDER_HOST HSPI_HOST
-
-#else
 #define SENDER_HOST SPI2_HOST
 
-#endif
 
-
-//The semaphore indicating the slave is ready to receive stuff.
-static xQueueHandle rdySem;
-
-
-void RoundLcd::Init(Orientation_t _orientation)
+void RoundLcd::spi_init()
 {
+    char *TAG_spi = "spi";
     esp_err_t ret;
-    spi_device_handle_t handle;
+    
 
     //Configuration for the SPI bus
     spi_bus_config_t buscfg={
@@ -86,60 +46,25 @@ void RoundLcd::Init(Orientation_t _orientation)
         .queue_size=3
     };
 
-    //GPIO config for the handshake line.
-    gpio_config_t io_conf={
-        .intr_type=GPIO_INTR_POSEDGE,
-        .mode=GPIO_MODE_INPUT,
-        .pull_up_en=1,
-        .pin_bit_mask=(1<<GPIO_HANDSHAKE)
-    };
-
-    int n=0;
-    char sendbuf[128] = {0};
-    char recvbuf[128] = {0};
-    spi_transaction_t t;
-    memset(&t, 0, sizeof(t));
-
-    //Create the semaphore.
-    rdySem=xSemaphoreCreateBinary();
-
-    //Set up handshake line interrupt.
-    gpio_config(&io_conf);
-    gpio_install_isr_service(0);
-    gpio_set_intr_type(GPIO_HANDSHAKE, GPIO_INTR_POSEDGE);
-    gpio_isr_handler_add(GPIO_HANDSHAKE, gpio_handshake_isr_handler, NULL);
-
     //Initialize the SPI bus and add the device we want to send stuff to.
     ret=spi_bus_initialize(SENDER_HOST, &buscfg, SPI_DMA_CH_AUTO);
-    assert(ret==ESP_OK);
+    if (ret != ESP_OK) {
+        ESP_LOGI(TAG_spi, "spi bus init failed");
+        return;
+    }
+    
     ret=spi_bus_add_device(SENDER_HOST, &devcfg, &handle);
-    assert(ret==ESP_OK);
-
-    //Assume the slave is ready for the first transmission: if the slave started up before us, we will not detect
-    //positive edge on the handshake line.
-    xSemaphoreGive(rdySem);
-
-    while(1) {
-        int res = snprintf(sendbuf, sizeof(sendbuf),
-                "Sender, transmission no. %04i. Last time, I received: \"%s\"", n, recvbuf);
-        if (res >= sizeof(sendbuf)) {
-            printf("Data truncated\n");
-        }
-        t.length=sizeof(sendbuf)*8;
-        t.tx_buffer=sendbuf;
-        t.rx_buffer=recvbuf;
-        //Wait for slave to be ready for next byte before sending
-        xSemaphoreTake(rdySem, portMAX_DELAY); //Wait until slave is ready
-        ret=spi_device_transmit(handle, &t);
-        printf("Received: %s\n", recvbuf);
-        n++;
+    if (ret != ESP_OK) {
+        ESP_LOGI(TAG_spi, "spi dev init failed");
+        return;
     }
 
-    //Never reached.
-    ret=spi_bus_remove_device(handle);
-    assert(ret==ESP_OK);
-    }
+//    ret=spi_bus_remove_device(handle);
 
+}
+
+void RoundLcd::Init(Orientation_t _orientation)
+{
     ChipSelect(true);
 
     delay(5);
@@ -474,21 +399,33 @@ void RoundLcd::SetDataOrCommand(bool _isData)
 void RoundLcd::WriteCommand(uint8_t _cmd)
 {
     SetDataOrCommand(false);
-    spi->transfer(_cmd);
+     spi_transaction_t t;
+    t.length = sizeof(_cmd);
+    t.tx_buffer = &_cmd;
+    t.rx_buffer = &_cmd;
+    spi_device_transmit(spi_handle, &t);
 }
 
 
 void RoundLcd::Write1Byte(uint8_t _data)
 {
     SetDataOrCommand(true);
-    spi->transfer(_data);
+    spi_transaction_t t;
+    t.length = sizeof(_data);
+    t.tx_buffer = &_data;
+    t.rx_buffer = &_data;
+    spi_device_transmit(spi_handle, &t);
 }
 
 
 void RoundLcd::WriteData(uint8_t* _data, uint32_t _len, bool _useDma)
 {
     SetDataOrCommand(true);
-    spi->transfernb((char *)_data, (char *)_data, _len);
+    spi_transaction_t t;
+    t.length = _len;
+    t.tx_buffer = _data;
+    t.rx_buffer = _data;
+    spi_device_transmit(spi_handle, &t);
 }
 
 
