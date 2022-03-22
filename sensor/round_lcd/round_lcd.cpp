@@ -43,11 +43,11 @@ void RoundLcd::spi_init()
         .command_bits=0,
         .address_bits=0,
         .dummy_bits=0,
-        .clock_speed_hz=5000000,
-        .duty_cycle_pos=128,        //50% duty cycle
         .mode=0,
-        .spics_io_num=GPIO_CS,
+        .duty_cycle_pos=128,        //50% duty cycle
         .cs_ena_posttrans=3,        //Keep the CS low 3 cycles after transaction, to stop slave from missing the last bit when CS has less propagation delay than CLK
+        .clock_speed_hz=5000000,
+        .spics_io_num=GPIO_CS,
         .queue_size=3
     };
 

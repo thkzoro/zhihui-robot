@@ -14,14 +14,16 @@
 #include "freertos/task.h"
 #include "esp_system.h"
 #include "esp_spi_flash.h"
+#include "round_lcd.h"
 
 static const char *TAG = "robot-main";
 
-void app_main(void)
+extern "C" void app_main(void)
 {
     ESP_LOGI(TAG, "esp32-s3 robot");
 
-
+    RoundLcd lcd;
+    lcd.spi_init();
     esp_chip_info_t chip_info;
     esp_chip_info(&chip_info);
     printf("This is %s chip with %d CPU core(s), WiFi%s%s, ",
