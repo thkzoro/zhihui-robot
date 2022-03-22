@@ -13,9 +13,12 @@
 #define GPIO_MISO 13
 #define GPIO_SCLK 12
 #define GPIO_CS 10
-
-
 #define SENDER_HOST SPI2_HOST
+
+#define GPIO_OUTPUT_IO_BLK    0
+#define GPIO_OUTPUT_IO_DC     1
+#define GPIO_OUTPUT_IO_RES    9
+#define GPIO_OUTPUT_PIN_SEL  ((1ULL<<GPIO_OUTPUT_IO_BLK) | (1ULL<<GPIO_OUTPUT_IO_DC) | (1ULL<<GPIO_OUTPUT_IO_RES))
 
 
 void RoundLcd::spi_init()
@@ -60,6 +63,25 @@ void RoundLcd::spi_init()
     }
 
 //    ret=spi_bus_remove_device(handle);
+
+}
+
+void RoundLcd::gpio_init()
+{
+    //zero-initialize the config structure.
+   gpio_config_t io_conf = {};
+   //disable interrupt
+   io_conf.intr_type = GPIO_INTR_DISABLE;
+   //set as output mode
+   io_conf.mode = GPIO_MODE_OUTPUT;
+   //bit mask of the pins that you want to set,e.g.GPIO18/19
+   io_conf.pin_bit_mask = GPIO_OUTPUT_PIN_SEL;
+   //disable pull-down mode
+   io_conf.pull_down_en = 0;
+   //disable pull-up mode
+   io_conf.pull_up_en = 0;
+   //configure GPIO with the given settings
+   gpio_config(&io_conf);
 
 }
 
@@ -386,13 +408,13 @@ void RoundLcd::ChipSelect(bool _enable)
 
 void RoundLcd::Reset(bool _enable)
 {
-    _enable ? gpio_res->setPinLow() : gpio_res->setPinHigh();
+    _enable ? gpio_set_level(GPIO_OUTPUT_IO_RES, 0): gpio_set_level(GPIO_OUTPUT_IO_RES, 1);
 }
 
 
 void RoundLcd::SetDataOrCommand(bool _isData)
 {
-    _isData ? gpio_DC->setPinHigh() : gpio_DC->setPinLow();
+    _isData ? gpio_set_level(GPIO_OUTPUT_IO_DC, 1): gpio_set_level(GPIO_OUTPUT_IO_DC, 0);
 }
 
 
@@ -434,7 +456,7 @@ void RoundLcd::SetBackLight(float _val)
     if (_val < 0) _val = 0;
     else if (_val > 1.0f) _val = 1.0f;
 
-    gpio_BLK->setValue(_val);
+    gpio_set_level(GPIO_OUTPUT_IO_BLK, _val);
 }
 
 void RoundLcd::showFixImage()

@@ -1,20 +1,15 @@
 #ifndef LINUX_SENSOR_ROUND_LCD_H
 #define LINUX_SENSOR_ROUND_LCD_H
 
-#include "spi.h"
-#include "gpio.h"
 #include <cstdint>
 
 
 class RoundLcd
 {
 public:
-    explicit RoundLcd(SPI* _spi) :
-            spi(_spi)
+    RoundLcd()        
     {
-        gpio_res = new GPIO(5);
-        gpio_DC = new GPIO(6);
-        gpio_BLK = new GPIO(13);
+       
     }
 
     typedef enum Orientation_t
@@ -34,7 +29,7 @@ public:
     } ColorMode_t;
 
     void spi_init();
-
+    void gpio_init();
     void Init(Orientation_t _orientation);
 
     void SetWindow(uint16_t _startX, uint16_t _endX, uint16_t _startY, uint16_t _endY);
@@ -62,10 +57,6 @@ private:
     spi_device_handle_t spi_handle;
     Orientation_t orientation = DEGREE_0;
     ColorMode_t colorMode = BIT_18;
-
-    GPIO *gpio_res;
-    GPIO *gpio_DC;
-    GPIO *gpio_BLK;
 };
 
 
