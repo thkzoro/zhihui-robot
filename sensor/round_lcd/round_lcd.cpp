@@ -1,5 +1,6 @@
 #include "round_lcd.h"
 #include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
 #include "driver/spi_master.h"
 #include "esp_log.h"
 #include "driver/gpio.h"
@@ -9,21 +10,22 @@
 #define delay(x)	vTaskDelay(x / portTICK_PERIOD_MS);
 
 #define GPIO_HANDSHAKE 2
-#define GPIO_MOSI 11
-#define GPIO_MISO 13
-#define GPIO_SCLK 12
-#define GPIO_CS 10
+#define GPIO_MOSI GPIO_NUM_11
+#define GPIO_MISO GPIO_NUM_13
+#define GPIO_SCLK GPIO_NUM_12
+#define GPIO_CS GPIO_NUM_10
 #define SENDER_HOST SPI2_HOST
 
-#define GPIO_OUTPUT_IO_BLK    0
-#define GPIO_OUTPUT_IO_DC     1
-#define GPIO_OUTPUT_IO_RES    9
+#define GPIO_OUTPUT_IO_BLK    GPIO_NUM_0
+#define GPIO_OUTPUT_IO_DC     GPIO_NUM_1
+#define GPIO_OUTPUT_IO_RES    GPIO_NUM_9
 #define GPIO_OUTPUT_PIN_SEL  ((1ULL<<GPIO_OUTPUT_IO_BLK) | (1ULL<<GPIO_OUTPUT_IO_DC) | (1ULL<<GPIO_OUTPUT_IO_RES))
 
+spi_device_handle_t spi_handle;
 
 void RoundLcd::spi_init()
 {
-    char *TAG_spi = "spi";
+    const char *TAG_spi = "spi";
     esp_err_t ret;
     
 
@@ -56,7 +58,7 @@ void RoundLcd::spi_init()
         return;
     }
     
-    ret=spi_bus_add_device(SENDER_HOST, &devcfg, &handle);
+    ret=spi_bus_add_device(SENDER_HOST, &devcfg, &spi_handle);
     if (ret != ESP_OK) {
         ESP_LOGI(TAG_spi, "spi dev init failed");
         return;
@@ -77,9 +79,9 @@ void RoundLcd::gpio_init()
    //bit mask of the pins that you want to set,e.g.GPIO18/19
    io_conf.pin_bit_mask = GPIO_OUTPUT_PIN_SEL;
    //disable pull-down mode
-   io_conf.pull_down_en = 0;
+   io_conf.pull_down_en = GPIO_PULLDOWN_DISABLE;
    //disable pull-up mode
-   io_conf.pull_up_en = 0;
+   io_conf.pull_up_en = GPIO_PULLUP_DISABLE;
    //configure GPIO with the given settings
    gpio_config(&io_conf);
 
@@ -461,5 +463,5 @@ void RoundLcd::SetBackLight(float _val)
 
 void RoundLcd::showFixImage()
 {
-    WriteFrameBuffer(gImage_qq, sizeof gImage_qq);
+   
 }

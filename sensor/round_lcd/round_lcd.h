@@ -54,7 +54,6 @@ private:
 
     void WriteData(uint8_t* _data, uint32_t _len, bool _useDma = false);
 
-    spi_device_handle_t spi_handle;
     Orientation_t orientation = DEGREE_0;
     ColorMode_t colorMode = BIT_18;
 };
