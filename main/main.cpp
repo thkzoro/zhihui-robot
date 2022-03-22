@@ -15,6 +15,7 @@
 #include "esp_system.h"
 #include "esp_spi_flash.h"
 #include "round_lcd.h"
+#include "pic.h"
 
 static const char *TAG = "robot-main";
 
@@ -23,7 +24,9 @@ extern "C" void app_main(void)
     ESP_LOGI(TAG, "esp32-s3 robot");
 
     RoundLcd lcd;
-    lcd.spi_init();
+    lcd.Init(RoundLcd::DEGREE_0);
+    lcd.LCD_ShowPicture(0, 0, 10, 10, gImage_1);
+    
     esp_chip_info_t chip_info;
     esp_chip_info(&chip_info);
     printf("This is %s chip with %d CPU core(s), WiFi%s%s, ",

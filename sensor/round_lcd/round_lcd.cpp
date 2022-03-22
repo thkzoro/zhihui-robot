@@ -89,6 +89,9 @@ void RoundLcd::gpio_init()
 
 void RoundLcd::Init(Orientation_t _orientation)
 {
+    gpio_init();
+    spi_init();
+
     ChipSelect(true);
 
     delay(5);
@@ -461,7 +464,20 @@ void RoundLcd::SetBackLight(float _val)
     gpio_set_level(GPIO_OUTPUT_IO_BLK, _val);
 }
 
-void RoundLcd::showFixImage()
+void RoundLcd::LCD_ShowPicture(uint16_t x, uint16_t y, uint16_t length, uint16_t width, const uint8_t pic[])
 {
-   
+    uint16_t i,j;
+    uint32_t k=0;
+
+    SetWindow(x, x+length-1, y, y+width-1);
+    for(i=0;i<length;i++)
+    {
+        for(j=0;j<width;j++)
+        {
+            Write1Byte(pic[k*2]);
+            Write1Byte(pic[k*2+1]);
+            k++;
+        }
+    }
 }
+

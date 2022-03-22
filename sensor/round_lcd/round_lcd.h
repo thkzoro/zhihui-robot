@@ -40,7 +40,7 @@ public:
 
     volatile bool isBusy = false;
 
-    void showFixImage();
+    void LCD_ShowPicture(uint16_t x, uint16_t y, uint16_t length, uint16_t width, const uint8_t pic[]);
 private:
     void ChipSelect(bool _enable);
 
