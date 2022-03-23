@@ -1,3 +1,9 @@
-set(COMPONENT_SRCS round_lcd/round_lcd.cpp)
-set(COMPONENT_ADD_INCLUDEDIRS round_lcd)
+set(COMPONENT_SRCS 
+	round_lcd/round_lcd.cpp
+	servo/servo.cpp
+	)
+set(COMPONENT_ADD_INCLUDEDIRS 
+	round_lcd
+	servo
+	)
 register_component()

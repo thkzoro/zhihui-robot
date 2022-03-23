@@ -2,11 +2,19 @@
 #define SERVO_H
 
 #include <cstdint>
+#include "driver/ledc.h"
 
 class Servo
 {
 public:
-    Servo(){}
+    Servo(ledc_channel_t pwm1, ledc_channel_t pwm2) {
+        m_pwm1 = pwm1;
+        m_pwm2 = pwm2;
+    }
+
+    static void servoPwmTimerInit();
+    void servoPwmInit();
+    void servoAdcInit();
 
     const float DCE_INTEGRAL_LIMIT = 500;
 
@@ -40,6 +48,8 @@ public:
     void SetPwm(int16_t _pwm);
 
 private:
+    ledc_channel_t m_pwm1;
+    ledc_channel_t m_pwm2;
     bool isEnabled;
     float lastAngle;
     float limitAngleMin;

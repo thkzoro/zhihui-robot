@@ -16,6 +16,7 @@
 #include "esp_spi_flash.h"
 #include "round_lcd.h"
 #include "pic.h"
+#include "servo.h"
 
 static const char *TAG = "robot-main";
 
@@ -26,6 +27,10 @@ extern "C" void app_main(void)
     RoundLcd lcd;
     lcd.Init(RoundLcd::DEGREE_0);
     lcd.LCD_ShowPicture(0, 0, 10, 10, gImage_1);
+
+    Servo::servoPwmTimerInit();
+    Servo servo_head(LEDC_CHANNEL_0, LEDC_CHANNEL_1);
+    servo_head.servoPwmInit();
     
     esp_chip_info_t chip_info;
     esp_chip_info(&chip_info);
