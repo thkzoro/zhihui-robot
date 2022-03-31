@@ -7,10 +7,7 @@
 class RoundLcd
 {
 public:
-    RoundLcd()        
-    {
-       
-    }
+    RoundLcd(){}
 
     typedef enum Orientation_t
     {

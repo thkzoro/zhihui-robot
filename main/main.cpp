@@ -1,11 +1,3 @@
-/* Hello World Example
-
-   This example code is in the Public Domain (or CC0 licensed, at your option.)
-
-   Unless required by applicable law or agreed to in writing, this
-   software is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
-   CONDITIONS OF ANY KIND, either express or implied.
-*/
 #include <stdio.h>
 #include <esp_log.h>
 
@@ -14,19 +6,19 @@
 #include "freertos/task.h"
 #include "esp_system.h"
 #include "esp_spi_flash.h"
-#include "round_lcd.h"
-#include "pic.h"
+
 #include "servo.h"
+#include "robot.h"
 
 static const char *TAG = "robot-main";
+static Robot electron;
+
 
 extern "C" void app_main(void)
 {
     ESP_LOGI(TAG, "esp32-s3 robot");
 
-    RoundLcd lcd;
-    lcd.Init(RoundLcd::DEGREE_0);
-    lcd.LCD_ShowPicture(0, 0, 10, 10, gImage_1);
+    electron.do_init();
 
     Servo::servoPwmTimerInit();
     Servo servo_head(LEDC_CHANNEL_0, LEDC_CHANNEL_1);
