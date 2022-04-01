@@ -9,7 +9,8 @@
 
 class Robot {
 public:
-    Robot() {}
+    Robot() {m_pLcd = nullptr;}
+    ~Robot() {if (m_pLcd) delete m_pLcd;}
 
     int  do_init();
     void do_poll();

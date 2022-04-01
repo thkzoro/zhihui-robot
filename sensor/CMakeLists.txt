@@ -1,5 +1,7 @@
 set(COMPONENT_SRCS 
 	round_lcd/round_lcd.cpp
+	round_lcd/lcdfontlib.c
+		round_lcd/lcdpicturelib.c
 	servo/servo.cpp
 	)
 set(COMPONENT_ADD_INCLUDEDIRS 
