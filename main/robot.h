@@ -3,14 +3,14 @@
 
 #include "round_lcd.h"
 #include "servo.h"
-
+#include "paj7620.h"
 
 #define ANY 0
 
 class Robot {
 public:
-    Robot() {m_pLcd = nullptr;}
-    ~Robot() {if (m_pLcd) delete m_pLcd;}
+    Robot() {m_pLcd = nullptr; m_pPAJ7620 = nullptr;}
+    ~Robot() {if (m_pLcd) delete m_pLcd; if (m_pPAJ7620) delete m_pPAJ7620;}
 
     int  do_init();
     void do_poll();
@@ -56,7 +56,8 @@ public:
     void UpdateJointAngle(JointStatus_t &_joint, float _angleSetPoint);
 
 private:
-    RoundLcd* m_pLcd;
+    RoundLcd *m_pLcd;
+    PAJ7620 *m_pPAJ7620;
     //舵机
     //摄像头
     //手势传感器

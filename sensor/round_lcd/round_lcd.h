@@ -85,8 +85,8 @@ public:
         DEGREE_180,
         DEGREE_270
     };
-    RoundLcd(LcdIoCfg &ioCfg, Orientation_t _orientation) { memcpy(&ioCfg, &m_ioCfg, sizeof(ioCfg)); }
-    ~RoundLcd() { spi_bus_remove_device(m_spi_handle); }
+    RoundLcd(LcdIoCfg &ioCfg, Orientation_t _orientation) { memcpy(&m_ioCfg, &ioCfg, sizeof(ioCfg)); }
+    ~RoundLcd();
     //LCD 功能函数
     void LCD_Fill(u16 xsta,u16 ysta,u16 xend,u16 yend,u16 color);//指定区域填充颜色
     void LCD_DrawPoint(u16 x,u16 y,u16 color);//在指定位置画一个点

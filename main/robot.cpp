@@ -1,5 +1,7 @@
 #include "robot.h"
 
+extern const unsigned char gImage_1[3200];
+
 int Robot::do_init()
 {
 //    /********* Need to adjust parameters for specific hardware *********/
@@ -17,9 +19,12 @@ int Robot::do_init()
 //    // Body
 //    joint[6] = JointStatus_t{12, 0, 180, 0, -90, 90, false};
 //    /********* Need to adjust parameters for specific hardware *********/
+
+	//LCD屏幕初始化
     LcdIoCfg lcdIoCfg;
 
     memset(&lcdIoCfg, 0, sizeof(lcdIoCfg));
+    lcdIoCfg.spi_id = SPI2_HOST;
     lcdIoCfg.spi_clk = GPIO_NUM_12;
     lcdIoCfg.spi_mosi = GPIO_NUM_11;
     lcdIoCfg.spi_miso = GPIO_NUM_13;
@@ -31,6 +36,17 @@ int Robot::do_init()
     m_pLcd = new RoundLcd(lcdIoCfg, RoundLcd::DEGREE_0);
     m_pLcd->LCD_Init();
     m_pLcd->LCD_Fill(0,0,LCD_W,LCD_H,WHITE);
-//    m_pLcd->LCD_ShowPicture(0, 0, 40, 40, gImage_1);
+    for(int j=0;j<3;j++) {
+        for(int i=0;i<6;i++) {
+        	m_pLcd->LCD_ShowPicture(40*i,120+j*40,40,40,gImage_1);
+        }
+    }
+    m_pLcd->LCD_ShowString(32,80,(const u8*)("LCD_Diameter:"),RED,WHITE,16,0);
+
+    //手势传感器初始化
+    PAJ7620IoCfg paj7620IoCfg;
+    memset(&paj7620IoCfg, 0, sizeof(paj7620IoCfg));
+
+    m_pPAJ7620 = new PAJ7620(paj7620IoCfg);
     return 0;
 }

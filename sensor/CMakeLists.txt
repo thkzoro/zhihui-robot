@@ -1,11 +1,14 @@
 set(COMPONENT_SRCS 
-	round_lcd/round_lcd.cpp
-	round_lcd/lcdfontlib.c
+		round_lcd/round_lcd.cpp
+		round_lcd/lcdfontlib.c
 		round_lcd/lcdpicturelib.c
-	servo/servo.cpp
+		servo/servo.cpp
+		paj7620/paj7620.cpp
 	)
-set(COMPONENT_ADD_INCLUDEDIRS 
-	round_lcd
-	servo
+set(COMPONENT_ADD_INCLUDEDIRS
+		./
+		round_lcd
+		servo
+		paj7620
 	)
 register_component()

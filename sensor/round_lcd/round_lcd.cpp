@@ -1,20 +1,21 @@
 #include "round_lcd.h"
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
 #include "esp_log.h"
 #include "driver/gpio.h"
 # include <string.h>
-#include "lcdfontlib.h"
-#include "lcdpicturelib.h"
+#include "utils.h"
 
 #define GPIO_HANDSHAKE 2
-#define delay(x)	vTaskDelay(x / portTICK_PERIOD_MS)
-#define delay_ms(x) delay(x)
 
 extern const unsigned char ascii_1206[][12];
 extern const unsigned char ascii_1608[][16];
 extern const unsigned char ascii_2412[][48];
 extern const unsigned char ascii_3216[][64];
+
+RoundLcd::~RoundLcd()
+{
+	spi_bus_remove_device(m_spi_handle);
+}
+
 /******************************************************************************
       函数说明：在指定区域填充颜色
       入口数据：xsta,ysta   起始坐标
@@ -319,10 +320,11 @@ void RoundLcd::LCD_ShowPicture(u16 x,u16 y,u16 length,u16 width,const u8 pic[])
 void RoundLcd::LCD_Writ_Bus(u8 data)
 {
     spi_transaction_t t;
-    t.length = sizeof(data);
+    memset(&t, 0, sizeof(t));
+    t.length = sizeof(data) * 8;
     t.tx_buffer = &data;
-    t.rx_buffer = &data;
-    spi_device_transmit(m_spi_handle, &t);
+    esp_err_t ret = spi_device_polling_transmit(m_spi_handle, &t);
+    assert(ret==ESP_OK);
 }
 
 
@@ -403,42 +405,35 @@ bool RoundLcd::gpio_init()
 
 bool RoundLcd::spi_init()
 {
-    esp_err_t ret;
-    //Configuration for the SPI bus
-    spi_bus_config_t busCfg;
+	esp_err_t ret;
+	//Configuration for the SPI bus
+	spi_bus_config_t busCfg={
+			.mosi_io_num=GPIO_NUM_11,
+			.miso_io_num=GPIO_NUM_13,
+			.sclk_io_num=GPIO_NUM_12,
+			.quadwp_io_num=-1,
+			.quadhd_io_num=-1,
+			.max_transfer_sz=16*320*2+8,
+	};
 
-    memset(&busCfg, 0, sizeof(busCfg));
+	spi_device_interface_config_t devCfg={
+			.mode=0,                                //SPI mode 0
+			.clock_speed_hz=26*1000*1000,           //Clock out at 26 MHz
+			.spics_io_num=GPIO_NUM_10,               //CS pin
+			.queue_size=7,                          //We want to be able to queue 7 transactions at a time
+//        .pre_cb=lcd_spi_pre_transfer_callback,  //Specify pre-transfer callback to handle D/C line
+	};
+	//Initialize the SPI bus and add the device we want to send stuff to.
+	ret = spi_bus_initialize(SPI2_HOST, &busCfg, SPI_DMA_CH_AUTO);
+	if (ret != ESP_OK) {
+		return false;
+	}
 
-    busCfg.mosi_io_num = m_ioCfg.spi_mosi;
-    busCfg.miso_io_num = m_ioCfg.spi_miso;
-    busCfg.sclk_io_num = m_ioCfg.spi_clk;
-    busCfg.quadwp_io_num=-1;
-    busCfg.quadhd_io_num=-1;
-
-    //Configuration for the SPI device on the other side of the bus
-    spi_device_interface_config_t devCfg;
-
-    memset(&devCfg, 0, sizeof(devCfg));
-    devCfg.command_bits = 0;
-    devCfg.address_bits = 0;
-    devCfg.dummy_bits = 0;
-    devCfg.mode = 0;
-    devCfg.duty_cycle_pos = 128;        //50% duty cycle
-    devCfg.cs_ena_posttrans = 3;        //Keep the CS low 3 cycles after transaction, to stop slave from missing the last bit when CS has less propagation delay than CLK
-    devCfg.clock_speed_hz = 5000000;
-    devCfg.spics_io_num = m_ioCfg.spi_cs;
-    devCfg.queue_size = 3;
-
-    //Initialize the SPI bus and add the device we want to send stuff to.
-    ret = spi_bus_initialize(m_ioCfg.spi_id, &busCfg, SPI_DMA_CH_AUTO);
-    if (ret != ESP_OK) {
-        return false;
-    }
-
-    ret = spi_bus_add_device(m_ioCfg.spi_id, &devCfg, &m_spi_handle);
-    if (ret != ESP_OK) {
-        return false;
-    }
+	ret = spi_bus_add_device(SPI2_HOST, &devCfg, &m_spi_handle);
+	if (ret != ESP_OK) {
+		return false;
+	}
+	ESP_LOGI("spi", "spi init ok");
 
     return true;
 }

@@ -9,9 +9,22 @@
 
 #include "servo.h"
 #include "robot.h"
+#include "driver/spi_master.h"
 
 static const char *TAG = "robot-main";
 static Robot electron;
+
+#define LCD_HOST    SPI2_HOST
+
+#define PIN_NUM_MISO GPIO_NUM_13
+#define PIN_NUM_MOSI GPIO_NUM_11
+#define PIN_NUM_CLK  GPIO_NUM_12
+#define PIN_NUM_CS   GPIO_NUM_10
+
+#define PIN_NUM_DC   GPIO_NUM_1
+#define PIN_NUM_RST  GPIO_NUM_9
+#define PIN_NUM_BCKL GPIO_NUM_0
+
 
 
 extern "C" void app_main(void)
