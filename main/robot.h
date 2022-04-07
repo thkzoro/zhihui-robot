@@ -4,13 +4,14 @@
 #include "round_lcd.h"
 #include "servo.h"
 #include "paj7620.h"
+#include "usb_robot.h"
 
 #define ANY 0
 
 class Robot {
 public:
-    Robot() {m_pLcd = nullptr; m_pPAJ7620 = nullptr;}
-    ~Robot() {if (m_pLcd) delete m_pLcd; if (m_pPAJ7620) delete m_pPAJ7620;}
+    Robot() {m_pLcd = nullptr; m_pPAJ7620 = nullptr; m_pUsbRobot = nullptr;}
+    ~Robot() {if (m_pLcd) delete m_pLcd; if (m_pPAJ7620) delete m_pPAJ7620; if (m_pUsbRobot) delete m_pUsbRobot;}
 
     int  do_init();
     void do_poll();
@@ -58,6 +59,7 @@ public:
 private:
     RoundLcd *m_pLcd;
     PAJ7620 *m_pPAJ7620;
+    UsbRobot *m_pUsbRobot;
     //舵机
     //摄像头
     //手势传感器

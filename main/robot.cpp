@@ -46,7 +46,15 @@ int Robot::do_init()
     //手势传感器初始化
     PAJ7620IoCfg paj7620IoCfg;
     memset(&paj7620IoCfg, 0, sizeof(paj7620IoCfg));
-
+    paj7620IoCfg.i2c_id = 0;
+    paj7620IoCfg.i2c_sda = GPIO_NUM_18;
+    paj7620IoCfg.i2c_scl = GPIO_NUM_17;
     m_pPAJ7620 = new PAJ7620(paj7620IoCfg);
+    m_pPAJ7620->init();
+
+    //usb初始化
+	 m_pUsbRobot = new UsbRobot();
+	 m_pUsbRobot->init();
+
     return 0;
 }

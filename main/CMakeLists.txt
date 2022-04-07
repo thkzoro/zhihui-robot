@@ -5,6 +5,7 @@ set(COMPONENT_PRIV_REQUIRES )
 set(COMPONENT_SRCS
         main.cpp
         robot.cpp
+        usb_robot.cpp
         )
 set(COMPONENT_ADD_INCLUDEDIRS .)
 

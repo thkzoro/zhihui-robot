@@ -5,7 +5,7 @@
 #include "utils.h"
 
 #define I2C_MASTER_TIMEOUT_MS       1000
-
+#define I2C_MASTER_FREQ_HZ	1000000
 /* Registers' initialization data */
 unsigned char initRegisterArray[][2] = {	// Initial Gesture
     {0xEF,0x00},
@@ -260,16 +260,16 @@ uint8_t PAJ7620::readReg(uint8_t addr, uint8_t qty, uint8_t data[])
 /**************************************************************** 
  * Function Name: selectBank
  * Description:  PAJ7620 select register bank
- * Parameters: BANK0, BANK1
+ * Parameters: PAJ7620_BANK0, PAJ7620_BANK1
  * Return: none
 ****************************************************************/ 
-void PAJ7620::selectBank(bank_e bank)
+void PAJ7620::selectBank(int bank)
 {
     switch(bank){
-		case BANK0:
+		case PAJ7620_BANK0:
 			writeReg(PAJ7620_REGITER_BANK_SEL, PAJ7620_BANK0);
 			break;
-		case BANK1:
+		case PAJ7620_BANK1:
 			writeReg(PAJ7620_REGITER_BANK_SEL, PAJ7620_BANK1);
 			break;
 		default:
@@ -285,9 +285,9 @@ bool PAJ7620::i2c_init()
             .scl_io_num = m_ioCfg.i2c_scl,
             .sda_pullup_en = GPIO_PULLUP_ENABLE,
             .scl_pullup_en = GPIO_PULLUP_ENABLE,
-            .master.clk_speed = I2C_MASTER_FREQ_HZ,
+//            .master.clk_speed = I2C_MASTER_FREQ_HZ,
     };
-
+    conf.master.clk_speed = I2C_MASTER_FREQ_HZ,
     i2c_param_config(m_ioCfg.i2c_id, &conf);
     esp_err_t ret = i2c_driver_install(m_ioCfg.i2c_id, conf.mode, 0, 0, 0);
     return (ret == ESP_OK);
@@ -312,8 +312,8 @@ uint8_t PAJ7620::init(void)
     
 	ESP_LOGI("paj7620", "INIT SENSOR...");
 
-	selectBank(BANK0);
-	selectBank(BANK0);
+	selectBank(PAJ7620_BANK0);
+	selectBank(PAJ7620_BANK0);
 
 	error = readReg(0, 1, &data0);
 	if (error)
@@ -325,10 +325,10 @@ uint8_t PAJ7620::init(void)
 	{
 		return error;
 	}
-	Serial.print("Addr0 =");
-	Serial.print(data0 , HEX);
-	Serial.print(",  Addr1 =");
-	ESP_LOGI("paj7620", data1 , HEX);
+	ESP_LOGI("paj7620", "Addr0 =");
+//	ESP_LOGI("paj7620", data0 , HEX);
+	ESP_LOGI("paj7620", ",  Addr1 =");
+//	ESP_LOGI("paj7620", data1 , HEX);
 
 	if ( (data0 != 0x20 ) || (data1 != 0x76) )
 	{
@@ -344,7 +344,7 @@ uint8_t PAJ7620::init(void)
 		writeReg(initRegisterArray[i][0], initRegisterArray[i][1]);
 	}
 	
-	selectBank(BANK0);  //gesture flage reg in Bank0
+	selectBank(PAJ7620_BANK0);  //gesture flage reg in PAJ7620_BANK0
 	
 	ESP_LOGI("paj7620", "Paj7620 initialize register finished.");
 	return 0;

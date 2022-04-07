@@ -1,8 +1,7 @@
 #ifndef __PAJ7620_H__
 #define __PAJ7620_H__
 #include "hal/gpio_types.h"
-
-#define BIT(x)  1 << x
+#include <string.h>
 
 #define PAJ7620_VAL(val, maskbit)		( val << maskbit )
 #define PAJ7620_ADDR_BASE				0x00
@@ -78,7 +77,7 @@ public:
 
     bool i2c_init();
     uint8_t init(void);
-    void selectBank(bank_e bank);
+    void selectBank(int bank);
     uint8_t writeReg(uint8_t addr, uint8_t cmd);
     uint8_t readReg(uint8_t addr, uint8_t qty, uint8_t data[]);
 

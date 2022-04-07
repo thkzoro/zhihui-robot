@@ -11,21 +11,8 @@
 #include "robot.h"
 #include "driver/spi_master.h"
 
-static const char *TAG = "robot-main";
+static const char *TAG = "main";
 static Robot electron;
-
-#define LCD_HOST    SPI2_HOST
-
-#define PIN_NUM_MISO GPIO_NUM_13
-#define PIN_NUM_MOSI GPIO_NUM_11
-#define PIN_NUM_CLK  GPIO_NUM_12
-#define PIN_NUM_CS   GPIO_NUM_10
-
-#define PIN_NUM_DC   GPIO_NUM_1
-#define PIN_NUM_RST  GPIO_NUM_9
-#define PIN_NUM_BCKL GPIO_NUM_0
-
-
 
 extern "C" void app_main(void)
 {
@@ -52,11 +39,7 @@ extern "C" void app_main(void)
 
     printf("Minimum free heap size: %d bytes\n", esp_get_minimum_free_heap_size());
 
-    for (int i = 10; i >= 0; i--) {
-        printf("Restarting in %d seconds...\n", i);
-        vTaskDelay(1000 / portTICK_PERIOD_MS);
+    while(true){
+    	 vTaskDelay(1000 / portTICK_PERIOD_MS);
     }
-    printf("Restarting now.\n");
-    fflush(stdout);
-    esp_restart();
 }
