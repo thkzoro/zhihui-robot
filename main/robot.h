@@ -1,19 +1,32 @@
 #ifndef ESP_IDF_V4_4_ROBOT_H
 #define ESP_IDF_V4_4_ROBOT_H
-
-#include "round_lcd.h"
-#include "servo.h"
+#include "mpu6050.h"
+#include "robot_face_screen.h"
 #include "paj7620.h"
-#include "usb_robot.h"
 
 #define ANY 0
 
 class Robot {
 public:
-    Robot() {m_pLcd = nullptr; m_pPAJ7620 = nullptr; m_pUsbRobot = nullptr;}
-    ~Robot() {if (m_pLcd) delete m_pLcd; if (m_pPAJ7620) delete m_pPAJ7620; if (m_pUsbRobot) delete m_pUsbRobot;}
+    Robot() {
+    	m_pLcd = nullptr; /*m_pPAJ7620 = nullptr; m_pUsbRobot = nullptr;*/
+    	m_i2c0_bus_handle = nullptr;
+    	m_spi2_bus_handle = nullptr;
+        m_mpu6050 = nullptr;
+    	m_xQueueFrame_camera = xQueueCreate(2, sizeof(camera_fb_t *));
+    	m_xQueueFrame_lcd = xQueueCreate(2, sizeof(camera_fb_t *));
+    }
+    virtual ~Robot() {
+        if (m_pLcd) delete m_pLcd;
+        mpu6050_delete(&m_mpu6050);
+        /*if (m_pPAJ7620) delete m_pPAJ7620; if (m_pUsbRobot) delete m_pUsbRobot;*/
+    }
 
-    int  do_init();
+    esp_err_t robot_init();
+    esp_err_t robot_gpio_init(void);
+    esp_err_t robot_i2c_bus_init(void);
+    esp_err_t robot_spi_bus_init(void);
+
     void do_poll();
 
     struct UsbBuffer_t {
@@ -57,9 +70,15 @@ public:
     void UpdateJointAngle(JointStatus_t &_joint, float _angleSetPoint);
 
 private:
-    RoundLcd *m_pLcd;
+    i2c_bus_handle_t m_i2c0_bus_handle;
+    spi_bus_handle_t m_spi2_bus_handle;
+    mpu6050_handle_t m_mpu6050;
+    QueueHandle_t m_xQueueFrame_camera;
+    QueueHandle_t m_xQueueFrame_lcd;
+    RobotLCD *m_pLcd;
     PAJ7620 *m_pPAJ7620;
-    UsbRobot *m_pUsbRobot;
+
+//    UsbRobot *m_pUsbRobot;
     //舵机
     //摄像头
     //手势传感器

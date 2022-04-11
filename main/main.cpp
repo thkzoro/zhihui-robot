@@ -7,7 +7,6 @@
 #include "esp_system.h"
 #include "esp_spi_flash.h"
 
-#include "servo.h"
 #include "robot.h"
 #include "driver/spi_master.h"
 
@@ -18,12 +17,8 @@ extern "C" void app_main(void)
 {
     ESP_LOGI(TAG, "esp32-s3 robot");
 
-    electron.do_init();
+    electron.robot_init();
 
-    Servo::servoPwmTimerInit();
-    Servo servo_head(LEDC_CHANNEL_0, LEDC_CHANNEL_1);
-    servo_head.servoPwmInit();
-    
     esp_chip_info_t chip_info;
     esp_chip_info(&chip_info);
     printf("This is %s chip with %d CPU core(s), WiFi%s%s, ",

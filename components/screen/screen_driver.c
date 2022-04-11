@@ -58,7 +58,9 @@ extern scr_driver_t lcd_st7789_default_driver;
 #ifdef CONFIG_LCD_DRIVER_SCREEN_CONTROLLER_ST7796
 extern scr_driver_t lcd_st7796_default_driver;
 #endif
-
+#ifdef CONFIG_LCD_DRIVER_SCREEN_CONTROLLER_GC9A01
+extern scr_driver_t lcd_gc9a01_default_driver;
+#endif
 /**< Monochrome screen */
 #ifdef CONFIG_LCD_DRIVER_SCREEN_CONTROLLER_SSD1306
 extern scr_driver_t lcd_ssd1306_default_driver;
@@ -125,6 +127,11 @@ esp_err_t scr_find_driver(scr_controller_t controller, scr_driver_t *out_screen)
 #ifdef CONFIG_LCD_DRIVER_SCREEN_CONTROLLER_SSD1963
     case SCREEN_CONTROLLER_SSD1963:
         *out_screen = lcd_ssd1963_default_driver;
+        break;
+#endif
+#ifdef CONFIG_LCD_DRIVER_SCREEN_CONTROLLER_GC9A01
+    case SCREEN_CONTROLLER_ST7789:
+        *out_screen = lcd_gc9a01_default_driver;
         break;
 #endif
 
