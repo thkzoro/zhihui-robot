@@ -240,11 +240,6 @@
 			<location>D:/Espressif/frameworks/esp-idf-v4.4/components/esp-tls/esp_tls_mbedtls.c</location>
 		</link>
 		<link>
-			<name>esp_idf_components/esp_adc_cal/esp_adc_cal_common.c</name>
-			<type>1</type>
-			<location>D:/Espressif/frameworks/esp-idf-v4.4/components/esp_adc_cal/esp_adc_cal_common.c</location>
-		</link>
-		<link>
 			<name>esp_idf_components/esp_adc_cal/esp_adc_cal_esp32s3.c</name>
 			<type>1</type>
 			<location>D:/Espressif/frameworks/esp-idf-v4.4/components/esp_adc_cal/esp_adc_cal_esp32s3.c</location>
@@ -403,11 +398,6 @@
 			<name>esp_idf_components/esp_system/dbg_stubs.c</name>
 			<type>1</type>
 			<location>D:/Espressif/frameworks/esp-idf-v4.4/components/esp_system/dbg_stubs.c</location>
-		</link>
-		<link>
-			<name>esp_idf_components/esp_system/debug_stubs.c</name>
-			<type>1</type>
-			<location>D:/Espressif/frameworks/esp-idf-v4.4/components/esp_system/debug_stubs.c</location>
 		</link>
 		<link>
 			<name>esp_idf_components/esp_system/esp_err.c</name>
@@ -995,11 +985,6 @@
 			<location>D:/Espressif/frameworks/esp-idf-v4.4/components/spi_flash/spi_flash_chip_mxic_opi.c</location>
 		</link>
 		<link>
-			<name>esp_idf_components/spi_flash/spi_flash_chip_th.c</name>
-			<type>1</type>
-			<location>D:/Espressif/frameworks/esp-idf-v4.4/components/spi_flash/spi_flash_chip_th.c</location>
-		</link>
-		<link>
 			<name>esp_idf_components/spi_flash/spi_flash_chip_winbond.c</name>
 			<type>1</type>
 			<location>D:/Espressif/frameworks/esp-idf-v4.4/components/spi_flash/spi_flash_chip_winbond.c</location>
@@ -1335,11 +1320,6 @@
 			<location>D:/Espressif/frameworks/esp-idf-v4.4/components/esp-tls/esp-tls-crypto/esp_tls_crypto.c</location>
 		</link>
 		<link>
-			<name>esp_idf_components/esp_adc_cal/esp32s3/esp_adc_cal.c</name>
-			<type>1</type>
-			<location>D:/Espressif/frameworks/esp-idf-v4.4/components/esp_adc_cal/esp32s3/esp_adc_cal.c</location>
-		</link>
-		<link>
 			<name>esp_idf_components/esp_common/src/esp_err_to_name.c</name>
 			<type>1</type>
 			<location>D:/Espressif/frameworks/esp-idf-v4.4/components/esp_common/src/esp_err_to_name.c</location>
@@ -1548,11 +1528,6 @@
 			<name>esp_idf_components/esp_netif/lwip/esp_netif_sta_list.c</name>
 			<type>1</type>
 			<location>D:/Espressif/frameworks/esp-idf-v4.4/components/esp_netif/lwip/esp_netif_sta_list.c</location>
-		</link>
-		<link>
-			<name>esp_idf_components/esp_phy/src/lib_printf.c</name>
-			<type>1</type>
-			<location>D:/Espressif/frameworks/esp-idf-v4.4/components/esp_phy/src/lib_printf.c</location>
 		</link>
 		<link>
 			<name>esp_idf_components/esp_phy/src/phy_init.c</name>
@@ -2460,6 +2435,11 @@
 			<location>D:/Espressif/frameworks/esp-idf-v4.4/components/esp_hw_support/port/esp32s3/memprot.c</location>
 		</link>
 		<link>
+			<name>esp_idf_components/esp_hw_support/port/esp32s3/opiram_psram.c</name>
+			<type>1</type>
+			<location>D:/Espressif/frameworks/esp-idf-v4.4/components/esp_hw_support/port/esp32s3/opiram_psram.c</location>
+		</link>
+		<link>
 			<name>esp_idf_components/esp_hw_support/port/esp32s3/rtc_clk.c</name>
 			<type>1</type>
 			<location>D:/Espressif/frameworks/esp-idf-v4.4/components/esp_hw_support/port/esp32s3/rtc_clk.c</location>
@@ -2795,11 +2775,6 @@
 			<location>D:/Espressif/frameworks/esp-idf-v4.4/components/mbedtls/mbedtls/library/cmac.c</location>
 		</link>
 		<link>
-			<name>esp_idf_components/mbedtls/mbedtls/library/constant_time.c</name>
-			<type>1</type>
-			<location>D:/Espressif/frameworks/esp-idf-v4.4/components/mbedtls/mbedtls/library/constant_time.c</location>
-		</link>
-		<link>
 			<name>esp_idf_components/mbedtls/mbedtls/library/ctr_drbg.c</name>
 			<type>1</type>
 			<location>D:/Espressif/frameworks/esp-idf-v4.4/components/mbedtls/mbedtls/library/ctr_drbg.c</location>
@@ -2910,16 +2885,6 @@
 			<location>D:/Espressif/frameworks/esp-idf-v4.4/components/mbedtls/mbedtls/library/memory_buffer_alloc.c</location>
 		</link>
 		<link>
-			<name>esp_idf_components/mbedtls/mbedtls/library/mps_reader.c</name>
-			<type>1</type>
-			<location>D:/Espressif/frameworks/esp-idf-v4.4/components/mbedtls/mbedtls/library/mps_reader.c</location>
-		</link>
-		<link>
-			<name>esp_idf_components/mbedtls/mbedtls/library/mps_trace.c</name>
-			<type>1</type>
-			<location>D:/Espressif/frameworks/esp-idf-v4.4/components/mbedtls/mbedtls/library/mps_trace.c</location>
-		</link>
-		<link>
 			<name>esp_idf_components/mbedtls/mbedtls/library/nist_kw.c</name>
 			<type>1</type>
 			<location>D:/Espressif/frameworks/esp-idf-v4.4/components/mbedtls/mbedtls/library/nist_kw.c</location>
@@ -2990,71 +2955,6 @@
 			<location>D:/Espressif/frameworks/esp-idf-v4.4/components/mbedtls/mbedtls/library/poly1305.c</location>
 		</link>
 		<link>
-			<name>esp_idf_components/mbedtls/mbedtls/library/psa_crypto.c</name>
-			<type>1</type>
-			<location>D:/Espressif/frameworks/esp-idf-v4.4/components/mbedtls/mbedtls/library/psa_crypto.c</location>
-		</link>
-		<link>
-			<name>esp_idf_components/mbedtls/mbedtls/library/psa_crypto_aead.c</name>
-			<type>1</type>
-			<location>D:/Espressif/frameworks/esp-idf-v4.4/components/mbedtls/mbedtls/library/psa_crypto_aead.c</location>
-		</link>
-		<link>
-			<name>esp_idf_components/mbedtls/mbedtls/library/psa_crypto_cipher.c</name>
-			<type>1</type>
-			<location>D:/Espressif/frameworks/esp-idf-v4.4/components/mbedtls/mbedtls/library/psa_crypto_cipher.c</location>
-		</link>
-		<link>
-			<name>esp_idf_components/mbedtls/mbedtls/library/psa_crypto_client.c</name>
-			<type>1</type>
-			<location>D:/Espressif/frameworks/esp-idf-v4.4/components/mbedtls/mbedtls/library/psa_crypto_client.c</location>
-		</link>
-		<link>
-			<name>esp_idf_components/mbedtls/mbedtls/library/psa_crypto_driver_wrappers.c</name>
-			<type>1</type>
-			<location>D:/Espressif/frameworks/esp-idf-v4.4/components/mbedtls/mbedtls/library/psa_crypto_driver_wrappers.c</location>
-		</link>
-		<link>
-			<name>esp_idf_components/mbedtls/mbedtls/library/psa_crypto_ecp.c</name>
-			<type>1</type>
-			<location>D:/Espressif/frameworks/esp-idf-v4.4/components/mbedtls/mbedtls/library/psa_crypto_ecp.c</location>
-		</link>
-		<link>
-			<name>esp_idf_components/mbedtls/mbedtls/library/psa_crypto_hash.c</name>
-			<type>1</type>
-			<location>D:/Espressif/frameworks/esp-idf-v4.4/components/mbedtls/mbedtls/library/psa_crypto_hash.c</location>
-		</link>
-		<link>
-			<name>esp_idf_components/mbedtls/mbedtls/library/psa_crypto_mac.c</name>
-			<type>1</type>
-			<location>D:/Espressif/frameworks/esp-idf-v4.4/components/mbedtls/mbedtls/library/psa_crypto_mac.c</location>
-		</link>
-		<link>
-			<name>esp_idf_components/mbedtls/mbedtls/library/psa_crypto_rsa.c</name>
-			<type>1</type>
-			<location>D:/Espressif/frameworks/esp-idf-v4.4/components/mbedtls/mbedtls/library/psa_crypto_rsa.c</location>
-		</link>
-		<link>
-			<name>esp_idf_components/mbedtls/mbedtls/library/psa_crypto_se.c</name>
-			<type>1</type>
-			<location>D:/Espressif/frameworks/esp-idf-v4.4/components/mbedtls/mbedtls/library/psa_crypto_se.c</location>
-		</link>
-		<link>
-			<name>esp_idf_components/mbedtls/mbedtls/library/psa_crypto_slot_management.c</name>
-			<type>1</type>
-			<location>D:/Espressif/frameworks/esp-idf-v4.4/components/mbedtls/mbedtls/library/psa_crypto_slot_management.c</location>
-		</link>
-		<link>
-			<name>esp_idf_components/mbedtls/mbedtls/library/psa_crypto_storage.c</name>
-			<type>1</type>
-			<location>D:/Espressif/frameworks/esp-idf-v4.4/components/mbedtls/mbedtls/library/psa_crypto_storage.c</location>
-		</link>
-		<link>
-			<name>esp_idf_components/mbedtls/mbedtls/library/psa_its_file.c</name>
-			<type>1</type>
-			<location>D:/Espressif/frameworks/esp-idf-v4.4/components/mbedtls/mbedtls/library/psa_its_file.c</location>
-		</link>
-		<link>
 			<name>esp_idf_components/mbedtls/mbedtls/library/ripemd160.c</name>
 			<type>1</type>
 			<location>D:/Espressif/frameworks/esp-idf-v4.4/components/mbedtls/mbedtls/library/ripemd160.c</location>
@@ -3105,11 +3005,6 @@
 			<location>D:/Espressif/frameworks/esp-idf-v4.4/components/mbedtls/mbedtls/library/ssl_cookie.c</location>
 		</link>
 		<link>
-			<name>esp_idf_components/mbedtls/mbedtls/library/ssl_msg.c</name>
-			<type>1</type>
-			<location>D:/Espressif/frameworks/esp-idf-v4.4/components/mbedtls/mbedtls/library/ssl_msg.c</location>
-		</link>
-		<link>
 			<name>esp_idf_components/mbedtls/mbedtls/library/ssl_srv.c</name>
 			<type>1</type>
 			<location>D:/Espressif/frameworks/esp-idf-v4.4/components/mbedtls/mbedtls/library/ssl_srv.c</location>
@@ -3123,11 +3018,6 @@
 			<name>esp_idf_components/mbedtls/mbedtls/library/ssl_tls.c</name>
 			<type>1</type>
 			<location>D:/Espressif/frameworks/esp-idf-v4.4/components/mbedtls/mbedtls/library/ssl_tls.c</location>
-		</link>
-		<link>
-			<name>esp_idf_components/mbedtls/mbedtls/library/ssl_tls13_keys.c</name>
-			<type>1</type>
-			<location>D:/Espressif/frameworks/esp-idf-v4.4/components/mbedtls/mbedtls/library/ssl_tls13_keys.c</location>
 		</link>
 		<link>
 			<name>esp_idf_components/mbedtls/mbedtls/library/threading.c</name>
@@ -3665,21 +3555,6 @@
 			<location>D:/Espressif/frameworks/esp-idf-v4.4/components/wpa_supplicant/src/eap_peer/eap_common.c</location>
 		</link>
 		<link>
-			<name>esp_idf_components/wpa_supplicant/src/eap_peer/eap_fast.c</name>
-			<type>1</type>
-			<location>D:/Espressif/frameworks/esp-idf-v4.4/components/wpa_supplicant/src/eap_peer/eap_fast.c</location>
-		</link>
-		<link>
-			<name>esp_idf_components/wpa_supplicant/src/eap_peer/eap_fast_common.c</name>
-			<type>1</type>
-			<location>D:/Espressif/frameworks/esp-idf-v4.4/components/wpa_supplicant/src/eap_peer/eap_fast_common.c</location>
-		</link>
-		<link>
-			<name>esp_idf_components/wpa_supplicant/src/eap_peer/eap_fast_pac.c</name>
-			<type>1</type>
-			<location>D:/Espressif/frameworks/esp-idf-v4.4/components/wpa_supplicant/src/eap_peer/eap_fast_pac.c</location>
-		</link>
-		<link>
 			<name>esp_idf_components/wpa_supplicant/src/eap_peer/eap_mschapv2.c</name>
 			<type>1</type>
 			<location>D:/Espressif/frameworks/esp-idf-v4.4/components/wpa_supplicant/src/eap_peer/eap_mschapv2.c</location>
@@ -3828,11 +3703,6 @@
 			<name>esp_idf_components/esp_system/port/arch/xtensa/debug_helpers_asm.S</name>
 			<type>1</type>
 			<location>D:/Espressif/frameworks/esp-idf-v4.4/components/esp_system/port/arch/xtensa/debug_helpers_asm.S</location>
-		</link>
-		<link>
-			<name>esp_idf_components/esp_system/port/arch/xtensa/debug_stubs.c</name>
-			<type>1</type>
-			<location>D:/Espressif/frameworks/esp-idf-v4.4/components/esp_system/port/arch/xtensa/debug_stubs.c</location>
 		</link>
 		<link>
 			<name>esp_idf_components/esp_system/port/arch/xtensa/expression_with_stack.c</name>
